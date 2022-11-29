@@ -29,8 +29,21 @@
  * Start Helper Functions
  * 
 */
+// Adapted from https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport/
+function isInViewport(element) {
+    const rect = element.getBoundingClientRect()
+    return (
+        (rect.top >= 0
+            || (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)))
+        &&
+        (rect.left >= 0
+            || (rect.right <= (window.innerWidth || document.documentElement.clientWidth)))
+    )
+}
 
-
+function distanceFromTop(element) {
+    return Math.abs(element.getBoundingClientRect().top)
+}
 
 /**
  * End Helper Functions
@@ -59,6 +72,44 @@ const buildNav = () => {
     navbarList.replaceChildren(...liArray)
 }
 
+// Add class 'active' to section when near top of viewport
+const addActiveToSection = () => {
+    const sections = document.querySelectorAll("section")
+    console.log(`There are ${sections.length} sections`)
+
+    let activeSection =
+        document.querySelector["section.active"] 
+
+    const visibleSections = [...sections].filter ( (section) => {
+        return isInViewport(section)
+    })
+
+    if (visibleSections.length === 1) {
+        activeSection = visibleSections[0]
+    } else if (visibleSections.length > 1) {
+        activeSection = visibleSections[0]
+        for (const visibleSection of visibleSections) {
+            if (distanceFromTop(visibleSection) < distanceFromTop(activeSection)) {
+                activeSection = visibleSection
+            }
+        }
+    } else {
+        console.log("No visible sections")
+    }
+
+    for (section of sections) {
+        if (section === activeSection) {
+            console.log("Found active section")
+            section.classList.add("active")
+        } else {
+            console.log("Found inactive section")
+            section.classList.remove("active")
+        }
+    }
+}
+
+// Scroll to anchor ID using scrollTO event
+
 const scrollToSection = (event) => {
     event.preventDefault()
     console.log("scrollToSection")
@@ -69,12 +120,6 @@ const scrollToSection = (event) => {
     section.scrollIntoView({behavior: "smooth"})
 }
 
-// Add class 'active' to section when near top of viewport
-
-
-// Scroll to anchor ID using scrollTO event
-
-
 /**
  * End Main Functions
  * Begin Events
@@ -83,6 +128,7 @@ const scrollToSection = (event) => {
 
 // Build menu 
 buildNav()
+document.addEventListener("scroll", addActiveToSection)
 // Scroll to section on link click
 
 // Set sections as active
