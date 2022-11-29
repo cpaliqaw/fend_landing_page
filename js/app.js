@@ -43,23 +43,31 @@ const buildNav = () => {
     console.log("Build nav")
     const navbarList = document.querySelector("#navbar__list")
     console.log(navbarList)
-    // TODO: replace with all at once
-    // navbarList.replaceChildren()
     const sections = document.querySelectorAll("section")
-    // TODO: use fragment
     const liArray = []
     for (const section of sections) {
-        const sectionName = section.getAttribute("data-nav")
+        const dataNav = section.getAttribute("data-nav")
         const li = document.createElement("li")
         liArray.push(li)
         const a = document.createElement("a")
         li.appendChild(a)
         a.setAttribute("class", "menu__link")
-        a.innerText = sectionName
+        a.setAttribute("data-nav", dataNav)
+        a.innerText = dataNav
+        a.addEventListener("click", scrollToSection)
     }
     navbarList.replaceChildren(...liArray)
 }
 
+const scrollToSection = (event) => {
+    event.preventDefault()
+    console.log("scrollToSection")
+    const dataNav = event.target.getAttribute("data-nav")
+    const query = `section[data-nav="${dataNav}"]`
+    console.log(query)
+    const section = document.querySelector(query)
+    section.scrollIntoView({behavior: "smooth"})
+}
 
 // Add class 'active' to section when near top of viewport
 
