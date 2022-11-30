@@ -30,13 +30,12 @@
  * 
 */
 function isInViewport(element) {
-    const r = element.getBoundingClientRect()
-    return 
-        (r.top >= 0) || (r.bottom <= (window.innerHeight))
+    const r = element.getBoundingClientRect();
+    return (r.top >= 0) || (r.bottom <= (window.innerHeight));
 }
 
 function distanceFromTop(element) {
-    return Math.abs(element.getBoundingClientRect().top)
+    return Math.abs(element.getBoundingClientRect().top);
 }
 
 /**
@@ -91,14 +90,39 @@ const addActiveToSection = () => {
         console.log("No visible sections")
     }
 
-    for (section of sections) {
-        if (section === activeSection) {
-            console.log("Found active section")
-            section.classList.add("active")
-        } else {
-            console.log("Found inactive section")
-            section.classList.remove("active")
+    // If no sections visible,
+    // keep currently active section,
+    // but complain, since this shouldn't currently be possible
+    if (visibleSections.length >= 1) {
+        for (section of sections) {
+            if (section === activeSection) {
+                console.log("Found active section")
+                section.classList.add("active")
+            } else {
+                console.log("Found inactive section")
+                section.classList.remove("active")
+            }
         }
+        const activeDataNav = activeSection.getAttribute("data-nav")
+
+        const navAnchors = document.querySelectorAll(".menu__link");
+        if (navAnchors.length === 0) {
+            console.error("Couldn't find any menu__links.")
+        }
+        for (navAnchor of navAnchors) {
+            if (navAnchor.getAttribute("data-nav") === activeDataNav) {
+                console.log("Found active anchor")
+                navAnchor.classList.add("active")
+            } else {
+                console.log("Found inactive anchor")
+                navAnchor.classList.remove("active")
+            }
+        }
+
+        const anchorWithDataNav = document.querySelector(`a[data-nav=${activeDataNav}]`)
+        anchorWithDataNav.setAttribute
+    } else {
+        console.log("No section of the page is visible")
     }
 }
 
