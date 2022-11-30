@@ -44,7 +44,7 @@ function distanceFromTop(section) {
         console.error("Couldn't locate a section's heading.");
         return;
     }
-    return Math.abs(sectionH2.getBoundingClientRect().top);
+    return sectionH2.getBoundingClientRect().top;
 }
 
 /**
@@ -80,19 +80,38 @@ const addActiveToSection = () => {
     console.log(`There are ${sections.length} sections`)
 
     let activeSection =
-        document.querySelector["section.active"] 
+        document.querySelector["section.active"];
+    let activeSectionDistanceFromTheTop =
+        distanceFromTop(activeSection);
+    let activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
 
     const visibleSections = [...sections].filter ( (section) => {
         return isInViewport(section)
     })
 
     if (visibleSections.length === 1) {
-        activeSection = visibleSections[0]
+        activeSection = visibleSections[0];
+        activeSectionDistanceFromTheTop = distanceFromTop(activeSection);
+        activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
     } else if (visibleSections.length > 1) {
         activeSection = visibleSections[0]
+        activeSectionDistanceFromTheTop =
+            distanceFromTop(activeSection);
+        activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
         for (const visibleSection of visibleSections) {
-            if (distanceFromTop(visibleSection) < distanceFromTop(activeSection)) {
-                activeSection = visibleSection
+            const currentDistanceFromTop = distanceFromTop(visibleSection);
+            const currentDistanceFromTopIsNegative = currentDistanceFromTop < 0;
+            let isSwitchActive = false;
+            if (!currentDistanceFromTopIsNegative && activeSectionDistanceFromTopIsNegative) {
+                isSwitchActive = true;
+            } else if ((currentDistanceFromTopIsNegative === activeSectionDistanceFromTopIsNegative) &&
+                       (Math.abs(currentDistanceFromTop) < Math.abs(activeSectionDistanceFromTheTop))) {
+                isSwitchActive = true;
+            }
+            if (isSwitchActive === true) {
+                activeSection = visibleSection;
+                activeSectionDistanceFromTheTop = distanceFromTop(activeSection);
+                activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
             }
         }
     } else {
