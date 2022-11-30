@@ -34,8 +34,17 @@ function isInViewport(element) {
     return (r.top >= 0) || (r.bottom <= (window.innerHeight));
 }
 
-function distanceFromTop(element) {
-    return Math.abs(element.getBoundingClientRect().top);
+function distanceFromTop(section) {
+    if (!section) {
+        console.error("Called distanceFromTop() on an undefined section.");
+        return;
+    }
+    const sectionH2 = section.firstElementChild.firstElementChild;
+    if (!sectionH2 || sectionH2.tagName !== "H2") {
+        console.error("Couldn't locate a section's heading.");
+        return;
+    }
+    return Math.abs(sectionH2.getBoundingClientRect().top);
 }
 
 /**
