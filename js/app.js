@@ -55,29 +55,29 @@ function distanceFromTop(section) {
 
 // build the nav
 const buildNav = () => {
-    console.log("Build nav")
-    const navbarList = document.querySelector("#navbar__list")
-    console.log(navbarList)
-    const sections = document.querySelectorAll("section")
-    const liArray = []
+    console.log("Build nav");
+    const navbarList = document.querySelector("#navbar__list");
+    console.log(navbarList);
+    const sections = document.querySelectorAll("section");
+    const liArray = [];
     for (const section of sections) {
-        const dataNav = section.getAttribute("data-nav")
-        const li = document.createElement("li")
-        liArray.push(li)
-        const a = document.createElement("a")
-        li.appendChild(a)
-        a.setAttribute("class", "menu__link")
-        a.setAttribute("data-nav", dataNav)
-        a.innerText = dataNav
-        a.addEventListener("click", scrollToSection)
+        const dataNav = section.getAttribute("data-nav");
+        const li = document.createElement("li");
+        liArray.push(li);
+        const a = document.createElement("a");
+        li.appendChild(a);
+        a.setAttribute("class", "menu__link");
+        a.setAttribute("data-nav", dataNav);
+        a.innerText = dataNav;
+        a.addEventListener("click", scrollToSection);
     }
-    navbarList.replaceChildren(...liArray)
+    navbarList.replaceChildren(...liArray);
 }
 
 // Add class 'active' to section when near top of viewport
 const addActiveToSection = () => {
-    const sections = document.querySelectorAll("section")
-    console.log(`There are ${sections.length} sections`)
+    const sections = document.querySelectorAll("section");
+    console.log(`There are ${sections.length} sections`);
 
     let activeSection =
         document.querySelector["section.active"];
@@ -86,7 +86,7 @@ const addActiveToSection = () => {
     let activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
 
     const visibleSections = [...sections].filter ( (section) => {
-        return isInViewport(section)
+        return isInViewport(section);
     })
 
     if (visibleSections.length === 1) {
@@ -94,7 +94,7 @@ const addActiveToSection = () => {
         activeSectionDistanceFromTheTop = distanceFromTop(activeSection);
         activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
     } else if (visibleSections.length > 1) {
-        activeSection = visibleSections[0]
+        activeSection = visibleSections[0];
         activeSectionDistanceFromTheTop =
             distanceFromTop(activeSection);
         activeSectionDistanceFromTopIsNegative = activeSectionDistanceFromTheTop < 0;
@@ -115,7 +115,7 @@ const addActiveToSection = () => {
             }
         }
     } else {
-        console.log("No visible sections")
+        console.log("No visible sections");
     }
 
     // If no sections visible,
@@ -124,46 +124,46 @@ const addActiveToSection = () => {
     if (visibleSections.length >= 1) {
         for (section of sections) {
             if (section === activeSection) {
-                console.log("Found active section")
-                section.classList.add("active")
+                console.log("Found active section");
+                section.classList.add("active");
             } else {
-                console.log("Found inactive section")
-                section.classList.remove("active")
+                console.log("Found inactive section");
+                section.classList.remove("active");
             }
         }
-        const activeDataNav = activeSection.getAttribute("data-nav")
+        const activeDataNav = activeSection.getAttribute("data-nav");
 
         const navAnchors = document.querySelectorAll(".menu__link");
         if (navAnchors.length === 0) {
-            console.error("Couldn't find any menu__links.")
+            console.error("Couldn't find any menu__links.");
         }
         for (navAnchor of navAnchors) {
             if (navAnchor.getAttribute("data-nav") === activeDataNav) {
-                console.log("Found active anchor")
-                navAnchor.classList.add("active")
+                console.log("Found active anchor");
+                navAnchor.classList.add("active");
             } else {
-                console.log("Found inactive anchor")
-                navAnchor.classList.remove("active")
+                console.log("Found inactive anchor");
+                navAnchor.classList.remove("active");
             }
         }
 
-        const anchorWithDataNav = document.querySelector(`a[data-nav=${activeDataNav}]`)
-        anchorWithDataNav.setAttribute
+        const anchorWithDataNav = document.querySelector(`a[data-nav=${activeDataNav}]`);
+        anchorWithDataNav.setAttribute;
     } else {
-        console.log("No section of the page is visible")
+        console.log("No section of the page is visible");
     }
 }
 
 // Scroll to anchor ID using scrollTO event
 
 const scrollToSection = (event) => {
-    event.preventDefault()
-    console.log("scrollToSection")
-    const dataNav = event.target.getAttribute("data-nav")
-    const query = `section[data-nav="${dataNav}"]`
-    console.log(query)
-    const section = document.querySelector(query)
-    section.scrollIntoView({behavior: "smooth"})
+    event.preventDefault();
+    console.log("scrollToSection");
+    const dataNav = event.target.getAttribute("data-nav");
+    const query = `section[data-nav="${dataNav}"]`;
+    console.log(query);
+    const section = document.querySelector(query);
+    section.scrollIntoView({behavior: "smooth"});
 }
 
 /**
@@ -173,8 +173,8 @@ const scrollToSection = (event) => {
 */
 
 // Build menu 
-buildNav()
-document.addEventListener("scroll", addActiveToSection)
+buildNav();
+document.addEventListener("scroll", addActiveToSection);
 // Scroll to section on link click
 
 // Set sections as active
